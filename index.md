@@ -1,2 +1,0 @@
-# Lightspeed High Speed Imager
-
