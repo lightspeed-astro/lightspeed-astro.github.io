@@ -14,9 +14,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/jekyll-build-pages@v1
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3  # Changed from v2
 
   deploy:
     environment:
@@ -25,5 +25,5 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/deploy-pages@v3
+      - uses: actions/deploy-pages@v4  # Changed from v3
         id: deployment
