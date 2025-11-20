@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Lightspeed-astro</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/bss-overrides.css">
+</head>
+
+<body><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightspeed Exposure Time Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .section-card {
+            margin-bottom: 20px;
+        }
+        .results-section {
+            background-color: #e9ecef;
+        }
+        .result-value {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .run-button {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .run-button:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center mb-4">Lightspeed Exposure Time Calculator</h1>
+        
+        <div class="row">
+            <!-- Sensor Properties -->
+            <div class="col-md-3">
+                <div class="card section-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Sensor Properties</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Select Sensor</label>
+                            <select class="form-select" id="sensor_name">
+                                <option value="qCMOS">qCMOS</option>
+                                <option value="HiPERCAM">HiPERCAM</option>
+                                <option value="Noiseless Ideal Sensor">Noiseless Ideal Sensor</option>
+                                <option value="Define New Sensor">Define New Sensor</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pixel Size (μm)</label>
+                            <input type="number" class="form-control" id="pix_size" step="0.1">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Read Noise (e⁻/pix)</label>
+                            <input type="number" class="form-control" id="read_noise" step="0.1">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Dark Current (e⁻/pix/s)</label>
+                            <input type="number" class="form-control" id="dark_current" step="0.01">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Quantum Efficiency</label>
+                            <input type="text" class="form-control" id="qe" disabled value="ARRAY">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nonlinearity Scale Factor</label>
+                            <input type="text" class="form-control" id="nonlinearity_scaleup" disabled value="ARRAY">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Full Well Capacity</label>
+                            <input type="number" class="form-control" id="full_well" step="1000">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Telescope Properties -->
+            <div class="col-md-3">
+                <div class="card section-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Telescope Properties</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Select Telescope</label>
+                            <select class="form-select" id="telescope_name">
+                                <option value="Clay (proto-Lightspeed)">Clay (proto-Lightspeed)</option>
+                                <option value="Clay (full Lightspeed)">Clay (full Lightspeed)</option>
+                                <option value="Clay Native">Clay Native</option>
+                                <option value="Hale">Hale</option>
+                                <option value="GTC (HiPERCAM)">GTC (HiPERCAM)</option>
+                                <option value="GMT">GMT</option>
+                                <option value="Keck (Z-imager)">Keck (Z-imager)</option>
+                                <option value="Define New Telescope">Define New Telescope</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Diameter (cm)</label>
+                            <input type="number" class="form-control" id="diameter" step="1">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">F/number</label>
+                            <input type="number" class="form-control" id="f_number" step="0.1">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Telescope Throughput</label>
+                            <input type="number" class="form-control" id="bandpass" step="0.01">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Altitude (m)</label>
+                            <input type="number" class="form-control" id="altitude" step="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observing Properties -->
+            <div class="col-md-3">
+                <div class="card section-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Observing Properties</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Exposure Time (s)</label>
+                            <input type="number" class="form-control" id="exptime" step="0.001" value="1.0">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Exposures in Stack</label>
+                            <input type="number" class="form-control" id="num_exposures" step="1" value="1">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Filter</label>
+                            <select class="form-select" id="filter">
+                                <option value="Sloan g'">Sloan g'</option>
+                                <option value="Sloan r'">Sloan r'</option>
+                                <option value="Sloan i'">Sloan i'</option>
+                                <option value="Sloan z'">Sloan z'</option>
+                                <option value="Sloan u'">Sloan u'</option>
+                                <option value="Halpha">Halpha</option>
+                                <option value="Baader OIII">Baader OIII</option>
+                                <option value="HiPERCAM g'">HiPERCAM g'</option>
+                                <option value="Prototype White Light">Prototype White Light</option>
+                                <option value="None">None (White Light)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Reimaging Throughput</label>
+                            <input type="number" class="form-control" id="reim_throughput" step="0.01">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Limiting SNR</label>
+                            <input type="number" class="form-control" id="limiting_snr" step="0.1" value="5.0">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Seeing (arcsec)</label>
+                            <input type="number" class="form-control" id="seeing" step="0.1" value="0.5">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Object Zenith Angle (deg)</label>
+                            <input type="number" class="form-control" id="zo" step="1" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Lunar Phase (deg)</label>
+                            <input type="number" class="form-control" id="alpha" step="1" value="180">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Object-Moon Separation (deg)</label>
+                            <input type="number" class="form-control" id="rho" step="1" value="45">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Aperture Radius (pix)</label>
+                            <input type="text" class="form-control" id="aper_rad" placeholder="Leave blank for optimal">
+                        </div>
+                        <button class="btn btn-success w-100 mb-2" id="plotTransButton">Plot Transmission</button>
+                        <button class="btn btn-success w-100" id="plotPrecisionButton">Plot Magnitude vs. Precision</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- General Results -->
+            <div class="col-md-3">
+                <div class="card section-card results-section">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">General Results</h5>
+                        <button class="btn btn-light btn-sm run-button" id="runGeneralButton">RUN</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <small class="text-muted">Pixel Scale (arcsec/pix)</small>
+                            <div class="result-value" id="pix_scale">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Pivot Wavelength (Å)</small>
+                            <div class="result-value" id="lambda_pivot">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">PSF FWHM (arcsec)</small>
+                            <div class="result-value" id="psf_fwhm">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Central Pixel Ensquared Energy (%)</small>
+                            <div class="result-value" id="central_pix_frac">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">A_eff at Pivot Wavelength (cm²)</small>
+                            <div class="result-value" id="eff_area_pivot">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Limiting AB magnitude</small>
+                            <div class="result-value" id="limiting_mag">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Saturating AB magnitude</small>
+                            <div class="result-value" id="saturating_mag">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Airmass</small>
+                            <div class="result-value" id="airmass">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Zero Point AB Magnitude (1 e⁻/s)</small>
+                            <div class="result-value" id="zero_point">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">t_exp where bkg noise = read noise (s)</small>
+                            <div class="result-value" id="exptime_turnover">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spectrum Observation Section -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card section-card">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Spectrum Observation</h5>
+                        <button class="btn btn-light btn-sm run-button" id="runSpectrumButton">RUN</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="spectrumType" id="flatSpecRadio" checked>
+                                <label class="form-check-label" for="flatSpecRadio">
+                                    Flat spectrum at AB magnitude:
+                                </label>
+                                <input type="number" class="form-control mt-1" id="flat_spec_mag" step="0.1" value="20.0">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="spectrumType" id="bbSpecRadio">
+                                <label class="form-check-label" for="bbSpecRadio">
+                                    Blackbody Spectrum
+                                </label>
+                            </div>
+                            <div class="ms-4 mt-2">
+                                <label class="form-label">Temperature (K)</label>
+                                <input type="number" class="form-control mb-2" id="bb_temp" step="100">
+                                <label class="form-label">Distance (Mpc)</label>
+                                <input type="number" class="form-control mb-2" id="bb_distance" step="0.1">
+                                <label class="form-label">Bolometric Luminosity (erg/s)</label>
+                                <input type="number" class="form-control" id="bb_lbol" step="1e36">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="spectrumType" id="userSpecRadio">
+                                <label class="form-check-label" for="userSpecRadio">
+                                    Custom spectrum name from spectra.py:
+                                </label>
+                                <input type="text" class="form-control mt-1" id="user_spec_name" placeholder="e.g., my_spectrum">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spectrum Results -->
+            <div class="col-md-6">
+                <div class="card section-card results-section">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Spectrum Results</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <small class="text-muted">Signal (e⁻)</small>
+                            <div class="result-value" id="signal">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Total Noise (e⁻)</small>
+                            <div class="result-value" id="tot_noise">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">SNR</small>
+                            <div class="result-value" id="snr">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Photometric Precision (ppm)</small>
+                            <div class="result-value" id="phot_prec">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Aperture Size (pix)</small>
+                            <div class="result-value" id="n_aper">-</div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Noise Breakdown</small>
+                            <div class="result-value" style="font-size: 0.9em; white-space: pre-line;" id="noise_breakdown">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Transmission Plot -->
+    <div class="modal fade" id="transmissionModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">System Transmission</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="transmissionPlot" style="width:100%;height:600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Precision Plot -->
+    <div class="modal fade" id="precisionModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Photometric Precision vs. Magnitude</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="precisionPlot" style="width:100%;height:600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Change this to your university server URL later
+        const API_URL = 'http://localhost:8000';
+
+        // Initialize default values when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default sensor
+            document.getElementById('sensor_name').value = 'qCMOS';
+            // Set default telescope  
+            document.getElementById('telescope_name').value = 'Clay (proto-Lightspeed)';
+            // Set default filter
+            document.getElementById('filter').value = "Sloan g'";
+            
+            // Trigger updates to populate dependent fields
+            updateSensorFields();
+            updateTelescopeFields();
+            updateReimaging();
+        });
+
+        // Update sensor fields when sensor is changed
+        document.getElementById('sensor_name').addEventListener('change', updateSensorFields);
+        
+        // Update telescope fields when telescope is changed
+        document.getElementById('telescope_name').addEventListener('change', function() {
+            updateTelescopeFields();
+            updateReimaging();
+        });
+        
+        // Update reimaging throughput when filter changes
+        document.getElementById('filter').addEventListener('change', updateReimaging);
+
+        async function updateSensorFields() {
+            const sensorName = document.getElementById('sensor_name').value;
+            try {
+                const response = await fetch(`${API_URL}/get_sensor_info/${encodeURIComponent(sensorName)}`);
+                const data = await response.json();
+                
+                document.getElementById('pix_size').value = data.pix_size;
+                document.getElementById('read_noise').value = data.read_noise;
+                document.getElementById('dark_current').value = data.dark_current;
+                document.getElementById('full_well').value = data.full_well;
+            } catch (error) {
+                console.error('Error fetching sensor info:', error);
+            }
+        }
+
+        async function updateTelescopeFields() {
+            const telescopeName = document.getElementById('telescope_name').value;
+            try {
+                const response = await fetch(`${API_URL}/get_telescope_info/${encodeURIComponent(telescopeName)}`);
+                const data = await response.json();
+                
+                document.getElementById('diameter').value = data.diam;
+                document.getElementById('f_number').value = data.f_num;
+                document.getElementById('bandpass').value = data.bandpass;
+                document.getElementById('altitude').value = data.altitude;
+            } catch (error) {
+                console.error('Error fetching telescope info:', error);
+            }
+        }
+
+        async function updateReimaging() {
+            const telescopeName = document.getElementById('telescope_name').value;
+            const filterName = document.getElementById('filter').value;
+            try {
+                const response = await fetch(`${API_URL}/get_reimaging_throughput`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({telescope: telescopeName, filter: filterName})
+                });
+                const data = await response.json();
+                document.getElementById('reim_throughput').value = data.throughput;
+            } catch (error) {
+                console.error('Error fetching reimaging throughput:', error);
+            }
+        }
+
+        // Run general calculations
+        document.getElementById('runGeneralButton').addEventListener('click', async function() {
+            const formData = {
+                sensor_name: document.getElementById('sensor_name').value,
+                pix_size: parseFloat(document.getElementById('pix_size').value),
+                read_noise: parseFloat(document.getElementById('read_noise').value),
+                dark_current: parseFloat(document.getElementById('dark_current').value),
+                full_well: parseFloat(document.getElementById('full_well').value),
+                telescope_name: document.getElementById('telescope_name').value,
+                diameter: parseFloat(document.getElementById('diameter').value),
+                f_number: parseFloat(document.getElementById('f_number').value),
+                bandpass: parseFloat(document.getElementById('bandpass').value),
+                altitude: parseFloat(document.getElementById('altitude').value),
+                exptime: parseFloat(document.getElementById('exptime').value),
+                num_exposures: parseInt(document.getElementById('num_exposures').value),
+                filter: document.getElementById('filter').value,
+                reim_throughput: parseFloat(document.getElementById('reim_throughput').value),
+                limiting_snr: parseFloat(document.getElementById('limiting_snr').value),
+                seeing: parseFloat(document.getElementById('seeing').value),
+                zo: parseFloat(document.getElementById('zo').value),
+                alpha: parseFloat(document.getElementById('alpha').value),
+                rho: parseFloat(document.getElementById('rho').value),
+                aper_rad: document.getElementById('aper_rad').value || null
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/calculate_general`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    alert('Error: ' + error.detail);
+                    return;
+                }
+
+                const results = await response.json();
+                
+                document.getElementById('pix_scale').textContent = results.pix_scale.toFixed(3);
+                document.getElementById('lambda_pivot').textContent = results.lambda_pivot.toFixed(0);
+                document.getElementById('psf_fwhm').textContent = results.psf_fwhm.toFixed(3);
+                document.getElementById('central_pix_frac').textContent = results.central_pix_frac.toFixed(3);
+                document.getElementById('eff_area_pivot').textContent = results.eff_area_pivot.toFixed(0);
+                document.getElementById('limiting_mag').textContent = results.limiting_mag.toFixed(3);
+                document.getElementById('saturating_mag').textContent = results.saturating_mag.toFixed(3);
+                document.getElementById('airmass').textContent = results.airmass.toFixed(3);
+                document.getElementById('zero_point').textContent = results.zero_point.toFixed(3);
+                document.getElementById('exptime_turnover').textContent = results.exptime_turnover.toFixed(3);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Run spectrum observation
+        document.getElementById('runSpectrumButton').addEventListener('click', async function() {
+            // Get spectrum type
+            let spectrumType, spectrumParams = {};
+            if (document.getElementById('flatSpecRadio').checked) {
+                spectrumType = 'flat';
+                spectrumParams.ab_mag = parseFloat(document.getElementById('flat_spec_mag').value);
+            } else if (document.getElementById('bbSpecRadio').checked) {
+                spectrumType = 'blackbody';
+                spectrumParams.temperature = parseFloat(document.getElementById('bb_temp').value);
+                spectrumParams.distance = parseFloat(document.getElementById('bb_distance').value);
+                spectrumParams.luminosity = parseFloat(document.getElementById('bb_lbol').value);
+            } else if (document.getElementById('userSpecRadio').checked) {
+                spectrumType = 'user';
+                spectrumParams.name = document.getElementById('user_spec_name').value;
+            }
+
+            const formData = {
+                sensor_name: document.getElementById('sensor_name').value,
+                pix_size: parseFloat(document.getElementById('pix_size').value),
+                read_noise: parseFloat(document.getElementById('read_noise').value),
+                dark_current: parseFloat(document.getElementById('dark_current').value),
+                full_well: parseFloat(document.getElementById('full_well').value),
+                telescope_name: document.getElementById('telescope_name').value,
+                diameter: parseFloat(document.getElementById('diameter').value),
+                f_number: parseFloat(document.getElementById('f_number').value),
+                bandpass: parseFloat(document.getElementById('bandpass').value),
+                altitude: parseFloat(document.getElementById('altitude').value),
+                exptime: parseFloat(document.getElementById('exptime').value),
+                num_exposures: parseInt(document.getElementById('num_exposures').value),
+                filter: document.getElementById('filter').value,
+                reim_throughput: parseFloat(document.getElementById('reim_throughput').value),
+                limiting_snr: parseFloat(document.getElementById('limiting_snr').value),
+                seeing: parseFloat(document.getElementById('seeing').value),
+                zo: parseFloat(document.getElementById('zo').value),
+                alpha: parseFloat(document.getElementById('alpha').value),
+                rho: parseFloat(document.getElementById('rho').value),
+                aper_rad: document.getElementById('aper_rad').value || null,
+                spectrum_type: spectrumType,
+                spectrum_params: spectrumParams
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/calculate_spectrum`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    alert('Error: ' + error.detail);
+                    return;
+                }
+
+                const results = await response.json();
+                
+                document.getElementById('signal').textContent = results.signal.toFixed(2);
+                document.getElementById('tot_noise').textContent = results.tot_noise.toFixed(2);
+                document.getElementById('snr').textContent = results.snr.toFixed(3);
+                document.getElementById('phot_prec').textContent = results.phot_prec.toFixed(3);
+                document.getElementById('n_aper').textContent = results.n_aper;
+                
+                const noiseBreakdown = `Shot noise: ${results.shot_noise.toFixed(2)}
+Dark noise: ${results.dark_noise.toFixed(2)}
+Read noise: ${results.read_noise.toFixed(2)}
+Background noise: ${results.bkg_noise.toFixed(2)}
+Scintillation noise: ${results.scint_noise.toFixed(2)}`;
+                document.getElementById('noise_breakdown').textContent = noiseBreakdown;
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Plot transmission
+        document.getElementById('plotTransButton').addEventListener('click', async function() {
+            const formData = {
+                sensor_name: document.getElementById('sensor_name').value,
+                telescope_name: document.getElementById('telescope_name').value,
+                filter: document.getElementById('filter').value,
+                reim_throughput: parseFloat(document.getElementById('reim_throughput').value),
+                zo: parseFloat(document.getElementById('zo').value),
+                altitude: parseFloat(document.getElementById('altitude').value)
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/plot_transmission`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    alert('Error: ' + error.detail);
+                    return;
+                }
+
+                const plotData = await response.json();
+                
+                // Create Plotly traces
+                const traces = plotData.traces.map(trace => ({
+                    x: trace.wavelength,
+                    y: trace.transmission,
+                    name: trace.name,
+                    mode: 'lines',
+                    line: {
+                        dash: trace.linestyle === '--' ? 'dash' : 
+                              trace.linestyle === ':' ? 'dot' : 
+                              trace.linestyle === '-.' ? 'dashdot' : 'solid',
+                        width: trace.linestyle === '-' ? 2 : 1.5
+                    }
+                }));
+
+                const layout = {
+                    title: 'System Transmission',
+                    xaxis: { title: 'Wavelength (nm)' },
+                    yaxis: { title: 'Transmission (%)' },
+                    showlegend: true,
+                    legend: { x: 0.7, y: 0.95 }
+                };
+
+                Plotly.newPlot('transmissionPlot', traces, layout);
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('transmissionModal'));
+                modal.show();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Plot magnitude vs precision
+        document.getElementById('plotPrecisionButton').addEventListener('click', async function() {
+            const formData = {
+                sensor_name: document.getElementById('sensor_name').value,
+                pix_size: parseFloat(document.getElementById('pix_size').value),
+                read_noise: parseFloat(document.getElementById('read_noise').value),
+                dark_current: parseFloat(document.getElementById('dark_current').value),
+                full_well: parseFloat(document.getElementById('full_well').value),
+                telescope_name: document.getElementById('telescope_name').value,
+                diameter: parseFloat(document.getElementById('diameter').value),
+                f_number: parseFloat(document.getElementById('f_number').value),
+                bandpass: parseFloat(document.getElementById('bandpass').value),
+                altitude: parseFloat(document.getElementById('altitude').value),
+                exptime: parseFloat(document.getElementById('exptime').value),
+                num_exposures: parseInt(document.getElementById('num_exposures').value),
+                filter: document.getElementById('filter').value,
+                reim_throughput: parseFloat(document.getElementById('reim_throughput').value),
+                limiting_snr: parseFloat(document.getElementById('limiting_snr').value),
+                seeing: parseFloat(document.getElementById('seeing').value),
+                zo: parseFloat(document.getElementById('zo').value),
+                alpha: parseFloat(document.getElementById('alpha').value),
+                rho: parseFloat(document.getElementById('rho').value),
+                aper_rad: document.getElementById('aper_rad').value || null
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/plot_mag_vs_precision`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    alert('Error: ' + error.detail);
+                    return;
+                }
+
+                const plotData = await response.json();
+                
+                // Create Plotly traces
+                const traces = [
+                    {
+                        x: plotData.magnitudes,
+                        y: plotData.total_noise,
+                        name: 'Total Noise',
+                        mode: 'lines',
+                        line: { width: 2.5 }
+                    },
+                    {
+                        x: plotData.magnitudes,
+                        y: plotData.shot_noise,
+                        name: 'Shot Noise',
+                        mode: 'lines',
+                        line: { width: 2 }
+                    },
+                    {
+                        x: plotData.magnitudes,
+                        y: plotData.read_noise,
+                        name: 'Read Noise',
+                        mode: 'lines',
+                        line: { width: 2 }
+                    },
+                    {
+                        x: plotData.magnitudes,
+                        y: plotData.bkg_noise,
+                        name: 'Background Noise',
+                        mode: 'lines',
+                        line: { width: 2 }
+                    },
+                    {
+                        x: plotData.magnitudes,
+                        y: plotData.dark_noise,
+                        name: 'Dark Current Noise',
+                        mode: 'lines',
+                        line: { width: 2 }
+                    },
+                    {
+                        x: plotData.magnitudes,
+                        y: plotData.scint_noise,
+                        name: 'Scintillation Noise',
+                        mode: 'lines',
+                        line: { width: 2 }
+                    }
+                ];
+
+                // Add non-detection region as a filled area from threshold to top
+                traces.push({
+                    x: [10, 28, 28, 10],
+                    y: [plotData.limiting_threshold, plotData.limiting_threshold, 2e6, 2e6],
+                    fill: 'toself',
+                    fillcolor: 'rgba(255, 0, 0, 0.1)',
+                    line: { width: 0 },
+                    name: 'Non-detection',
+                    showlegend: true,
+                    hoverinfo: 'skip'
+                });
+
+                const layout = {
+                    title: `${plotData.title}`,
+                    xaxis: { 
+                        title: 'AB Magnitude',
+                        range: [10, 28]
+                    },
+                    yaxis: { 
+                        title: 'Photometric Precision (ppm)',
+                        type: 'log',
+                        range: [0, 6.3]  // 1 to 2e6
+                    },
+                    showlegend: true,
+                    legend: { x: 0.02, y: 0.98 }
+                };
+
+                Plotly.newPlot('precisionPlot', traces, layout);
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('precisionModal'));
+                modal.show();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
