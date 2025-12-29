@@ -13,7 +13,6 @@
 <body><!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lightspeed Exposure Time Calculator</title>
@@ -59,10 +58,7 @@
                         <div class="mb-3">
                             <label class="form-label">Select Sensor</label>
                             <select class="form-select" id="sensor_name">
-                                <option value="qCMOS">qCMOS</option>
-                                <option value="HiPERCAM">HiPERCAM</option>
-                                <option value="Noiseless Ideal Sensor">Noiseless Ideal Sensor</option>
-                                <option value="Define New Sensor">Define New Sensor</option>
+                                <option value="">Loading...</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -103,14 +99,7 @@
                         <div class="mb-3">
                             <label class="form-label">Select Telescope</label>
                             <select class="form-select" id="telescope_name">
-                                <option value="Clay (proto-Lightspeed)">Clay (proto-Lightspeed)</option>
-                                <option value="Clay (full Lightspeed)">Clay (full Lightspeed)</option>
-                                <option value="Clay Native">Clay Native</option>
-                                <option value="Hale">Hale</option>
-                                <option value="GTC (HiPERCAM)">GTC (HiPERCAM)</option>
-                                <option value="GMT">GMT</option>
-                                <option value="Keck (Z-imager)">Keck (Z-imager)</option>
-                                <option value="Define New Telescope">Define New Telescope</option>
+                                <option value="">Loading...</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -151,16 +140,7 @@
                         <div class="mb-3">
                             <label class="form-label">Select Filter</label>
                             <select class="form-select" id="filter">
-                                <option value="Baader g'">Baader g'</option>
-                                <option value="Baader r'">Baader r'</option>
-                                <option value="Baader i'">Baader i'</option>
-                                <option value="Baader z'">Baader z'</option>
-                                <option value="Baader u'">Baader u'</option>
-                                <option value="Halpha">Halpha</option>
-                                <option value="Baader OIII">Baader OIII</option>
-                                <option value="HiPERCAM g'">HiPERCAM g'</option>
-                                <option value="Prototype White Light">Prototype White Light</option>
-                                <option value="None">None (White Light)</option>
+                                <option value="">Loading...</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -367,21 +347,63 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Change this to your university server URL later
-        const API_URL = 'http://localhost:8000';
+        const API_URL = 'http://hypernova.mit.edu:8080';
+
+        // Load available options from backend
+        async function loadAvailableOptions() {
+            try {
+                // Load sensors
+                const sensorsResponse = await fetch(`${API_URL}/get_available_sensors`);
+                const sensorsData = await sensorsResponse.json();
+                const sensorSelect = document.getElementById('sensor_name');
+                sensorSelect.innerHTML = '';
+                sensorsData.sensors.forEach(sensor => {
+                    const option = document.createElement('option');
+                    option.value = sensor;
+                    option.textContent = sensor;
+                    sensorSelect.appendChild(option);
+                });
+                sensorSelect.value = 'qCMOS';  // Set default
+
+                // Load telescopes
+                const telescopesResponse = await fetch(`${API_URL}/get_available_telescopes`);
+                const telescopesData = await telescopesResponse.json();
+                const telescopeSelect = document.getElementById('telescope_name');
+                telescopeSelect.innerHTML = '';
+                telescopesData.telescopes.forEach(telescope => {
+                    const option = document.createElement('option');
+                    option.value = telescope;
+                    option.textContent = telescope;
+                    telescopeSelect.appendChild(option);
+                });
+                telescopeSelect.value = 'Clay (proto-Lightspeed)';  // Set default
+
+                // Load filters
+                const filtersResponse = await fetch(`${API_URL}/get_available_filters`);
+                const filtersData = await filtersResponse.json();
+                const filterSelect = document.getElementById('filter');
+                filterSelect.innerHTML = '';
+                filtersData.filters.forEach(filter => {
+                    const option = document.createElement('option');
+                    option.value = filter;
+                    option.textContent = filter;
+                    filterSelect.appendChild(option);
+                });
+                filterSelect.value = "Baader g'";  // Set default
+
+                // Trigger updates to populate dependent fields
+                await updateSensorFields();
+                await updateTelescopeFields();
+                await updateReimaging();
+            } catch (error) {
+                console.error('Error loading options:', error);
+                alert('Could not load instrument options from server. Make sure the backend is running.');
+            }
+        }
 
         // Initialize default values when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Set default sensor
-            document.getElementById('sensor_name').value = 'qCMOS';
-            // Set default telescope  
-            document.getElementById('telescope_name').value = 'Clay (proto-Lightspeed)';
-            // Set default filter
-            document.getElementById('filter').value = "Baader g'";
-            
-            // Trigger updates to populate dependent fields
-            updateSensorFields();
-            updateTelescopeFields();
-            updateReimaging();
+            loadAvailableOptions();
         });
 
         // Update sensor fields when sensor is changed
