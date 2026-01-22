@@ -4,22 +4,74 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Lightspeed-astro</title>
+    <title>Lightspeed Resources</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="assets/css/bss-overrides.css">
+    
+    <style>
+        .nav-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu {
+            margin-top: 0;
+        }
+        /* Make the hover effect transparent */
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
 
 <body>
-    <h1 class="ps-0">
-        <div class="btn-group bg-black bg-opacity-75 w-100" role="group"><a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="about.html">About</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a></div>
-    </h1>
-    <h1 class="ps-4 pe-4"><em>Lightspeed </em>Resources</h1>
-    <ul>
-        <li><a href="etc.html">Exposure time calculator available on the web</a></li>
-        <li><a href="https://github.com/ChrisLayden/Lightspeed-ETC">Exposure time calculator source code</a></li>
-        <li>If you require access to the Lightspeed control software source code, please email clayden7@mit.edu</li>
-    </ul>
+    <header class="text-center text-white pt-0 mb-0 pb-0 masthead">
+        <div class="btn-group bg-black bg-opacity-75 w-100" role="group">
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a>
+            <div class="btn-group nav-dropdown" role="group">
+                <button class="btn btn-primary bg-black border-3 border-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">About</button>
+                <ul class="dropdown-menu bg-black">
+                    <li><a class="dropdown-item text-white" href="about.html">About</a></li>
+                    <li><a class="dropdown-item text-white" href="proto-lightspeed.html">proto-Lightspeed</a></li>
+                    <li><a class="dropdown-item text-white" href="lightspeed.html">Lightspeed</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <h1 class="mb-4">Lightspeed Resources</h1>
+
+        <section class="mb-5">
+            <h2 class="mb-3">Exposure Time Calculator</h2>
+            <p class="fs-5 mb-2">
+                <a href="etc.html" class="fs-4 fw-bold">Web-based Exposure Time Calculator</a>
+            </p>
+            <p class="fs-5">
+                <a href="https://github.com/ChrisLayden/Lightspeed-ETC">Source code on GitHub</a>
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="mb-3">Control Software</h2>
+            <p class="fs-5">
+                If you require access to the Lightspeed control software source code, please email 
+                <a href="mailto:clayden7@mit.edu">clayden7@mit.edu</a>
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="mb-3">Data Processing Pipeline</h2>
+            <p class="fs-5 text-muted">
+                Image processing pipeline coming soon
+            </p>
+        </section>
+
+    </main>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

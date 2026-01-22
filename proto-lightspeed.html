@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>proto-Lightspeed - Lightspeed</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/bss-overrides.css">
+    <style>
+        .nav-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu {
+            margin-top: 0;
+        }
+        /* Make the hover effect transparent */
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="text-center text-white pt-0 mb-0 pb-0 masthead">
+        <div class="btn-group bg-black bg-opacity-75 w-100" role="group">
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a>
+            <div class="btn-group nav-dropdown" role="group">
+                <button class="btn btn-primary bg-black border-3 border-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">About</button>
+                <ul class="dropdown-menu bg-black">
+                    <li><a class="dropdown-item text-white" href="about.html">About</a></li>
+                    <li><a class="dropdown-item text-white" href="proto-lightspeed.html">proto-Lightspeed</a></li>
+                    <li><a class="dropdown-item text-white" href="lightspeed.html">Lightspeed</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <h1 class="mb-4">proto-Lightspeed</h1>
+
+        <!-- proto-Lightspeed Design Section -->
+        <section class="mb-5">
+            <h2 class="border-bottom pb-2 mb-3">Design</h2>
+            
+            <h4>Optical System</h4>
+            <p>
+                proto-Lightspeed uses commercial off-the-shelf (COTS) re-imaging optics to de-magnify the telescope's 
+                f/11 focal plane. A Canon EF 400mm f/4 lens re-collimates the light, while a Canon RF 100–300mm f/2.8 
+                zoom lens provides adjustable magnification. This yields pixel scales between 0.017″–0.050″/pix, 
+                allowing switching between conventional imaging and speckle interferometry modes. proto-Lightspeed 
+                images a 1′ diameter field at up to 200 Hz (full field) 
+                or windowed fields at higher rates—up to 6600 Hz for a 1.6″ × 1′ strip.
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 900px;" src="assets/img/fig_1.png" alt="CAD model of proto-Lightspeed optical components">
+                <figcaption class="figure-caption mt-2">Computer-aided design model of the optical components of proto-Lightspeed. Reflected light from the telescope's tertiary mirror enters the instrument from the right.</figcaption>
+            </figure>
+
+            <h4>Filters</h4>
+            <p>
+                A seven-position filter wheel hosts Sloan u′, g′, r′, i′, z′ photometric filters and an OIII 
+                narrow-band filter (500.7 nm, 9 nm FWHM) for speckle interferometry. An additional Hα filter 
+                (653.3 nm, 1.1 nm FWHM) can be inserted into the collimated beam for narrow-band imaging.
+                Note: the COTS re-imaging optics have poor throughput in u′ and z′, so these filters should 
+                generally not be used with proto-Lightspeed.
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 900px;" src="assets/img/fig_2.png" alt="Filter transmission and throughput curves">
+                <figcaption class="figure-caption mt-2">a) Transmission curves for filters available in proto-Lightspeed (dashed lines), the quantum efficiency of the ORCA-Quest 2 camera (crosses and solid line), and atmospheric transmission at unit airmass (dotted line). b) Total throughput for each bandpass; u′ and z′ curves are upper limits.</figcaption>
+            </figure>
+
+            <h4>Mechanical and Electrical Design</h4>
+            <p>
+                The optical components are mounted on two solid aluminum breadboards secured to a rotator plate 
+                for direct mounting to the Nasmyth East port. A cooling system channels cold air across electronic 
+                components and supplies fresh air to the camera's thermoelectric coolers, maintaining the sensor 
+                at its nominal operating temperature of −20°C. The instrument extends approximately 1 m from the 
+                port with a total mass of approximately 160 kg.
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 900px;" src="assets/img/fig_3.png" alt="Overview of proto-Lightspeed components">
+                <figcaption class="figure-caption mt-2">Overview of proto-Lightspeed components. a) proto-Lightspeed mounted at the NasE port of the Clay telescope. b) Interior view showing the dual breadboards, optical components, and airflow baffles. c) The ORCA-Quest 2 camera with Birger RF lens controller. d) The control computer in the Clay equipment room.</figcaption>
+            </figure>
+
+            <h4>Detector</h4>
+            <p>
+                proto-Lightspeed employs the Hamamatsu ORCA-Quest 2 camera, featuring the HWK4123 
+                CMOS sensor with 4096 × 2304 pixels (4.6 µm pixel size). This sensor achieves deep sub-electron 
+                read noise of 0.29 e⁻ RMS in ultra-quiet mode, approaching the photon-counting regime. 
+                The detector operates at −20°C with dark current of just 0.0072 e⁻/pix/s and peak quantum efficiency 
+                of ~85% at 460 nm. The full well capacity is approximately 7000 e⁻.
+            </p>
+
+            <p>
+                The camera offers two readout modes with different noise and speed characteristics:
+            </p>
+            <table class="table table-bordered table-sm" style="max-width: 800px;">
+                <thead class="table-light">
+                    <tr>
+                        <th rowspan="2">Readout Mode</th>
+                        <th rowspan="2">Read Noise (e⁻ RMS)</th>
+                        <th colspan="4" class="text-center">Maximum Frame Rate (Hz)</th>
+                    </tr>
+                    <tr>
+                        <th>Full Sensor<br><small>2304 × 4096 pix</small></th>
+                        <th>1′ Full Field<br><small>1200 × 1200 pix</small></th>
+                        <th>1.6″ × 1′<br><small>32 × 1200 pix</small></th>
+                        <th>Absolute Max<br><small>4 × 4096 pix</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Standard</td>
+                        <td>0.41</td>
+                        <td>120</td>
+                        <td>200</td>
+                        <td>6600</td>
+                        <td>19800</td>
+                    </tr>
+                    <tr>
+                        <td>Ultra-quiet</td>
+                        <td>0.29</td>
+                        <td>25</td>
+                        <td>48</td>
+                        <td>1400</td>
+                        <td>4200</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Detector Nonlinearity Calibration</h4>
+            <p>
+                The ORCA-Quest 2 sensor exhibits nonlinear response at low signal levels due to incomplete charge 
+                transfer within each pixel. A per-pixel calibration corrects this nonlinearity across the full dynamic range. At 
+                very low signal levels, approximately 50% of photoelectrons are trapped; this efficiency improves 
+                asymptotically to nearly 100% at higher signal levels.
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 900px;" src="assets/img/fig_4.png" alt="Nonlinearity and internal QE">
+                <figcaption class="figure-caption mt-2">Nonlinearity and internal QE of the ORCA-Quest 2 camera. a) Raw sensor response showing nonlinearity at low signals. b) After applying per-pixel calibration, response is linear. c) Signal-dependent detection efficiency showing incomplete charge transfer at low signals.</figcaption>
+            </figure>
+        </section>
+
+        <!-- proto-Lightspeed Performance Section -->
+        <section class="mb-5">
+            <h2 class="border-bottom pb-2 mb-3">Performance</h2>
+
+            <h4>Measured Throughput</h4>
+            <p>
+                Zero points and throughput values measured during commissioning (referenced to SDSS):
+            </p>
+            <table class="table table-bordered table-sm" style="max-width: 500px;">
+                <thead class="table-light">
+                    <tr><th>Filter</th><th>Zero Point (AB mag)</th><th>Throughput</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>g′</td><td>27.6 ± 0.1</td><td>19 ± 2%</td></tr>
+                    <tr><td>r′</td><td>27.2 ± 0.1</td><td>21 ± 2%</td></tr>
+                    <tr><td>i′</td><td>26.0 ± 0.1</td><td>7 ± 1%</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Image Quality</h4>
+            <p>
+                proto-Lightspeed achieves seeing-limited observations across its full field 
+                in g′, r′, and i′. No measurable image distortion was found across the field. Lucky imaging 
+                can further improve image quality—stacking the best 7% of 200 ms frames improved 
+                PSF FWHM from 0.51″ to 0.37″.
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 900px;" src="assets/img/fig_7.png" alt="Quadruply lensed quasar">
+                <figcaption class="figure-caption mt-2">Quadruply lensed quasar DES J0420-4037. a) Single 10s proto-Lightspeed exposure in white light under 0.51″ seeing. b) Lucky imaging stack of best 7% of frames improves PSF to 0.37″. c) HST comparison image.</figcaption>
+            </figure>
+
+            <h4>Timing System and Accuracy</h4>
+            <p>
+                Absolute timing is achieved using a GPS-synchronized Meinberg TCR180PEX card that triggers 
+                exposures via a pulse-per-second signal and time-tags readout completion. This system delivers 
+                absolute timing accuracy better than 30 µs, verified on-sky using observations 
+                of the Crab pulsar. The optical pulse maximum 
+                was measured to occur within 5 ± 7 µs of the expected phase (using the Jodrell Bank radio 
+                ephemeris and the known ~255 µs optical-radio offset).
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 700px;" src="assets/img/fig_8.png" alt="Crab pulsar light curve">
+                <figcaption class="figure-caption mt-2">Optical light curve of the Crab pulsar obtained with proto-Lightspeed over 300 s integration, sampled at 9259 Hz and phase-folded. The red dotted line marks the expected optical pulse phase, confirming timing accuracy.</figcaption>
+            </figure>
+
+            <h4>Photometric Precision</h4>
+            <p>
+                Photometric precision was verified using 500 images of globular cluster M30 with 30 ms exposures. 
+                The measured noise-to-signal ratio agrees well with theoretical predictions from the 
+                <a href="etc.html">exposure time calculator</a>.
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 700px;" src="assets/img/fig_9.png" alt="Noise-to-signal ratio">
+                <figcaption class="figure-caption mt-2">Noise-to-signal ratio measured for sources in M30 (black points) compared to theoretical predictions from the exposure time calculator (red curve), showing excellent agreement. The dash-dotted line shows the theoretical noise assuming a perfectly linear sensor.</figcaption>
+            </figure>
+        </section>
+
+    </main>
+
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -4,17 +4,114 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Lightspeed-astro</title>
+    <title>Lightspeed Results</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="assets/css/bss-overrides.css">
+    
+    <style>
+        .nav-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu {
+            margin-top: 0;
+        }
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
 
 <body>
-    <h1>
-        <div class="btn-group bg-black bg-opacity-75 w-100" role="group"><a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="about.html">About</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a></div>
-    </h1>
-    <h1 class="ps-4 pe-4"><strong>Results from the&nbsp;<em>Lightspeed </em>project</strong></h1>
+    <header class="text-center text-white pt-0 mb-0 pb-0 masthead">
+        <div class="btn-group bg-black bg-opacity-75 w-100" role="group">
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a>
+            <div class="btn-group nav-dropdown" role="group">
+                <button class="btn btn-primary bg-black border-3 border-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">About</button>
+                <ul class="dropdown-menu bg-black">
+                    <li><a class="dropdown-item text-white" href="about.html">About</a></li>
+                    <li><a class="dropdown-item text-white" href="proto-lightspeed.html">proto-Lightspeed</a></li>
+                    <li><a class="dropdown-item text-white" href="lightspeed.html">Lightspeed</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <h1 class="mb-4">Results from the Lightspeed Project</h1>
+
+        <section class="mb-5">
+            <h2 class="mb-3">Science highlights from proto-Lightspeed commissioning</h2>
+            
+            <div class="mb-4">
+                <h3 class="h5">Optical Pulsar PSR B0540−69</h3>
+                <p class="fs-6">
+                    proto-Lightspeed observed the 51 ms optical pulsar PSR B0540−69 in the 
+                    Large Magellanic Cloud for 4.3 minutes with 3 ms exposures in December 2025 (Figure a). 
+                    The resulting pulse profile quality is comparable to 7.13 hours of previous observations 
+                    from Iqueye. An electron counting technique enabled by the detector's deep sub-electron
+                    read noise further reduced noise in the pulse profile.
+                </p>
+            </div>
+
+            <div class="mb-4">
+                <h3 class="h5">Black Hole X-ray Binary GX 339-4</h3>
+                <p class="fs-6">
+                    Observations of the black hole X-ray binary GX 339-4 at 100 Hz sampling 
+                    in September 2025 revealed optical flaring on timescales as short as 10 milliseconds (Figure b). 
+                    This rapid variability, showing brightening by a factor of over 7, was previously unresolved 
+                    in observations at 20 Hz frame rates.
+                </p>
+            </div>
+
+            <div class="mb-4">
+                <h3 class="h5">Narrow-band Imaging</h3>
+                <p class="fs-6">
+                    A 15 minute [OIII] exposure of a nearby dwarf galaxy (DESI ID 39627905885538609, distance 
+                    19.7 Mpc) demonstrated proto-Lightspeed's capability for high signal-to-noise narrow-band 
+                    imaging (Figure c). The image is dominated by shot noise from the sky background, with 
+                    Magellan's excellent angular resolution enabling detailed study of the multi-phase interstellar medium.
+                </p>
+            </div>
+
+            <div class="mb-4">
+                <h3 class="h5">Ultracompact Binary ATLAS J1013−4516</h3>
+                <p class="fs-6">
+                    proto-Lightspeed observed the mass-transferring white dwarf binary ATLAS J1013−4516 
+                    (G = 19.5 mag, orbital period 8.56 minutes) with 1 second integrations in December 2025 (Figure d). 
+                    The high-cadence observations sharply resolved the system's highly structured eclipse morphology, 
+                    delivering the most precise individual eclipse timings for this system to date.
+                </p>
+            </div>
+
+            <div class="text-center my-4">
+                <img src="assets/img/fig_10.png" alt="proto-Lightspeed science results" class="img-fluid" style="max-width: 90%;">
+                <p class="text-muted mt-2 fst-italic">
+                    Figure: Representative observations from proto-Lightspeed commissioning. 
+                    (a) Phase-folded light curve of optical pulsar PSR B0540−69 showing 51 ms pulsations obtained 
+                    in 4.3 minutes. The solid black line uses electron counting to reduce noise. Red shows previous 
+                    7.13 hour Iqueye observations for comparison. (b) Light curve of black hole X-ray binary GX 339-4 
+                    at 100 Hz (green) showing rapid flaring on 10 ms timescales. Black dashed line shows how the flares 
+                    appear at 20 Hz sampling. (c) 15 minute [OIII] narrowband image of nearby dwarf galaxy 
+                    DESI ID 39627905885538609. (d) Phase-folded light curve of ultracompact binary ATLAS J1013−4516 
+                    (8.56 minute period) observed with 1 second cadence, with model fit shown in black.
+                </p>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="mb-3">Publications</h2>
+            <ul class="fs-5">
+                <li><a href="https://arxiv.org/abs/2601.07925">Chickles et al. 2026, "An eclipsing 8.56 minute orbital period mass-transferring binary"</a></li>
+            </ul>
+        </section>
+
+    </main>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

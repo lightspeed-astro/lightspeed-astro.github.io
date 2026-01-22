@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>About - Lightspeed</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/bss-overrides.css">
+    <style>
+        .nav-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu {
+            margin-top: 0;
+        }
+        /* Make the hover effect transparent */
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="text-center text-white pt-0 mb-0 pb-0 masthead">
+        <div class="btn-group bg-black bg-opacity-75 w-100" role="group">
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a>
+            <div class="btn-group nav-dropdown" role="group">
+                <button class="btn btn-primary bg-black border-3 border-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">About</button>
+                <ul class="dropdown-menu bg-black">
+                    <li><a class="dropdown-item text-white" href="about.html">About</a></li>
+                    <li><a class="dropdown-item text-white" href="proto-lightspeed.html">proto-Lightspeed</a></li>
+                    <li><a class="dropdown-item text-white" href="lightspeed.html">Lightspeed</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <h1 class="mb-4">Lightspeed: The Facility Instrument</h1>
+
+        <!-- Full Lightspeed Section -->
+        <section class="mb-5">
+            <h2 class="border-bottom pb-2 mb-3">Design of Lightspeed</h2>
+            
+            <p>
+                Lightspeed will be a simultaneous 
+                five-channel imager intended to be a facility instrument on the Magellan Clay telescope.
+            </p>
+
+            <figure class="figure text-center w-100 my-4">
+                <img class="img-fluid" style="max-width: 900px;" src="assets/img/fig_11.png" alt="Lightspeed optical design">
+                <figcaption class="figure-caption mt-2">Left: Optical design of the full Lightspeed instrument, allowing for either five-channel u′, g′, r′, i′, z′ simultaneous imaging (with the potential for an additional infrared arm) or a single white light channel with polarimetric capabilities. Right: Designed image quality of Lightspeed's five optical channels.</figcaption>
+            </figure>
+
+            <h4>Optical Design</h4>
+            <p>
+                Lightspeed will use custom re-imaging optics with dichroic beam splitters to 
+                feed five channels simultaneously: u′, g′, r′, i′, and z′. Each channel will host its own 
+                ORCA-Quest 2 camera. Infrared light will pass through the dichroics, leaving the possibility 
+                for an additional photon-counting infrared arm using an HgCdTe linear-mode APD. An alternate 
+                "VIS-POL" channel will enable polarimetry and white-light imaging.
+            </p>
+
+            <h4>Field of View & Plate Scale</h4>
+            <p>
+                Lightspeed will deliver a 7′ × 4′ field of view—16 times larger than 
+                proto-Lightspeed—with a plate scale of 0.1″/pix. This larger plate scale 
+                will critically sample the PSF in good conditions, further reducing effective read noise 
+                for point sources. The larger field will enable studies of extended sources and provide 
+                an order-of-magnitude increase in sensitivity to serendipitous TNO occultations.
+            </p>
+
+            <h4>Predicted Performance</h4>
+            <p>
+                The custom optics will significantly improve throughput compared to proto-Lightspeed. 
+                Predicted zero points:
+            </p>
+            <table class="table table-bordered table-sm" style="max-width: 400px;">
+                <thead class="table-light">
+                    <tr><th>Filter</th><th>Zero Point (AB mag)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>u′</td><td>25.9</td></tr>
+                    <tr><td>g′</td><td>28.3</td></tr>
+                    <tr><td>r′</td><td>27.7</td></tr>
+                    <tr><td>i′</td><td>27.3</td></tr>
+                    <tr><td>z′</td><td>26.4</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

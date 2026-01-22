@@ -4,21 +4,86 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Lightspeed-astro</title>
+    <title>About the Lightspeed Project</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="assets/css/bss-overrides.css">
+    
+    <style>
+        .nav-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu {
+            margin-top: 0;
+        }
+        /* Make the hover effect transparent */
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
 
 <body>
-    <h1>
-        <div class="btn-group bg-black bg-opacity-75 w-100" role="group"><a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="about.html">About</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a><a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a></div>
-    </h1>
-    <h1 class="ps-4 pe-4">About Lightspeed</h1>
-    <p class="fs-4 ps-4 pe-4"><em>Lightspeed is</em>&nbsp;a multi-channel, high speed astronomical imager for the Magellan Clay telescope that is currently under construction.&nbsp; Using cutting-edge CMOS image sensors that achieve sub-electron read noise, <em>Lightspeed </em>will allow for high-precision studies of the fastest optically variable sources in the sky, such as optical pulsars, flaring accretion disks, and small solar system objects occulting background stars.<br><br>In September 2025, <em>proto-Lightspeed</em>, a single-channel prototype for <em>Lightspeed</em>, was commissioned on the Magellan Clay telescope.</p>
-    <figure class="figure"><img class="img-fluid figure-img" width="2440" height="1438" src="assets/img/protoLS_diagram.png">
-        <figcaption class="figure-caption text-center">Simplified diagram of <em>proto-Lightspeed</em>.</figcaption>
-    </figure>
+    <header class="text-center text-white pt-0 mb-0 pb-0 masthead">
+        <div class="btn-group bg-black bg-opacity-75 w-100" role="group">
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="index.html">Lightspeed Home</a>
+            <div class="btn-group nav-dropdown" role="group">
+                <button class="btn btn-primary bg-black border-3 border-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">About</button>
+                <ul class="dropdown-menu bg-black">
+                    <li><a class="dropdown-item text-white" href="about.html">About</a></li>
+                    <li><a class="dropdown-item text-white" href="proto-lightspeed.html">proto-Lightspeed</a></li>
+                    <li><a class="dropdown-item text-white" href="lightspeed.html">Lightspeed</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="resources.html">Resources</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="results.html">Results</a>
+            <a class="btn btn-primary bg-black border-3 border-white" role="button" href="https://binaries.mit.edu">Burdge Research Group</a>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <h1 class="mb-4">About the Lightspeed Project</h1>
+
+        <section class="mb-5">
+            <p class="fs-5">
+                Lightspeed will be a multi-channel, high-speed astronomical imager for the Magellan Clay telescope. 
+                Using cutting-edge CMOS image sensors that achieve deep sub-electron read noise (DSERN), Lightspeed 
+                will allow for high-precision studies of the fastest optically variable sources in the sky, such as 
+                optical pulsars, flaring accretion disks, and small solar system objects occulting background stars.
+            </p>
+            <p class="fs-5">
+                In September 2025, proto-Lightspeed, a single-channel prototype for Lightspeed, was 
+                commissioned on the Magellan Clay telescope. proto-Lightspeed will be available as a P.I. instrument 
+                beginning in the 2026B observing cycle.
+            </p>
+        </section>
+
+        <section class="mb-5">
+            <h2>Core Lightspeed Team</h2>
+            <ul class="fs-5">
+                <li>Kevin Burdge (PI, MIT)</li>
+                <li>Chris Layden (MIT)</li>
+                <li>Gabor Furesz (MIT)</li>
+                <li>Juliana Garcia-Mejia (MIT)</li>
+                <li>Roger Romani (Stanford)</li>
+                <li>Jack Dinsmore (Stanford)</li>
+                <li>Geoffrey Mo (Carnegie Science)</li>
+                <li>David Osip (Carnegie Science)</li>
+                <li>Jack Piotrowski (Carnegie Science)</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2>Learn More</h2>
+            <ul class="fs-5">
+                <li><a href="proto-lightspeed.html">proto-Lightspeed</a> – Design and performance of the single-channel prototype</li>
+                <li><a href="lightspeed.html">Lightspeed</a> – The planned five-channel facility instrument</li>
+            </ul>
+        </section>
+
+    </main>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
